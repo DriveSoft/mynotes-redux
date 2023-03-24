@@ -1,0 +1,63 @@
+@use "../../sass/variables";
+
+.editorTabs {
+    display: inline-flex;
+    width: 100%;
+    background-color: variables.$bgEditorTabs;
+    flex-wrap: wrap;     
+  }
+  
+  .editorTabs .tab {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: variables.$bgTabEditorTabs; 
+    cursor: pointer;   
+    min-width: 120px;
+    font-size: 14px;
+    color: variables.$colorTab;  
+    border-right: 1px solid variables.$bgActiveEditorTabs;
+    height: 32px;
+  }
+  
+  .activeTab {
+    color: variables.$fontColor !important;
+    background-color: variables.$bgActiveEditorTabs !important;
+  }
+  
+  .tab .tabIcon {
+    padding: 0 4px 0 8px;
+  }
+  
+  .tab .tabFilename {
+    padding: 0 5px 0 5px;
+    flex: 1;
+    margin-top: 12px;
+  }
+  
+  .tab .tabCloseButton {
+    padding: 0 4px 1px 4px;
+    border-radius: 5px;
+    margin-right: 4px;
+  }
+
+  .iconCross::after {
+    content: variables.$iconTabClose;  
+  }
+
+  .iconCircle::after {
+    content: variables.$iconTabCloseNotSaved;  
+  }  
+
+  .tab .tabCloseButton:hover {
+    background-color: variables.$tabCloseButtonHover;
+  }
+
+  .tab .tabCloseButton:hover span {
+    display: none;
+  }
+
+  .tab .tabCloseButton:hover::after {
+    content: variables.$iconTabClose;
+  }
+
