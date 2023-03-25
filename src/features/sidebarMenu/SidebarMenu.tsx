@@ -1,8 +1,9 @@
 import React from 'react'
-import Sidebar from '../../common/Sidebar/Sidebar'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { Sidebar } from '../../shared/ui/Sidebar'
+import { ISidebarButtonId, ISidebarButton } from '../../shared/ui/Sidebar'
 import { clicked } from "./sidebarMenuSlice";
-import { IButtonId, ISidebarButton } from '../../types'
+
 
 export const SidebarMenu = () => {
   const activeButton = useAppSelector((state) => state.sidebarMenu.activeSidebarMenuButton)
@@ -23,17 +24,17 @@ export const SidebarMenu = () => {
     },
   ];
   
-  const onButtonClick = (id: IButtonId) => {
+  const onButtonClick = (id: ISidebarButtonId) => {
     dispatch(clicked(id))
   }
   
   return (
-    <div>
+    <>
 				<Sidebar
 					buttons={sidebarButtons}
           activeButton={activeButton}
 					onButtonClick={onButtonClick}
 				/>      
-    </div>
+    </>
   )
 }

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IButtonId } from "../../types"
+import { ISidebarButtonId } from "../../shared/ui/Sidebar"
 
 type InitialState = {
-    activeSidebarMenuButton: IButtonId    
+    activeSidebarMenuButton: ISidebarButtonId    
 }
 
 const initialState: InitialState = {
@@ -13,10 +13,10 @@ const sidebarMenuSlice = createSlice({
     name: 'sidebarMenu',
     initialState,
     reducers: {
-        changed: (state, action: PayloadAction<IButtonId>) => {
+        changed: (state, action: PayloadAction<ISidebarButtonId>) => {
             state.activeSidebarMenuButton = action.payload
         },
-        clicked: (state, action: PayloadAction<IButtonId>) => {
+        clicked: (state, action: PayloadAction<ISidebarButtonId>) => {
             if(state.activeSidebarMenuButton === action.payload && action.payload !== 'NONE') {
                 state.activeSidebarMenuButton = 'NONE'
             } else {
