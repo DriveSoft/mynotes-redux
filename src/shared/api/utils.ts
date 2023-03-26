@@ -1,7 +1,7 @@
 import { IFileAPI } from './models'
 import { IFileTree } from '../types'
 
-export const createDataTree = (data: IFileAPI[]): IFileTree[] => {
+export const dataTreeApiToNestedDataTree = (data: IFileAPI[]): IFileTree[] => {
     const hashTable = Object.create(null)
     data.forEach(file => hashTable[file.id] = file.type === 'FOLDER' ? {...file, childNodes: []} : {...file})
     const dataTree: IFileTree[] = []

@@ -18,7 +18,7 @@ export interface IFileAPICreate {
     type: IFileType
     parentId: number
 }
-export const createFile = (fileObj: IFileAPICreate): AxiosPromise<IFileAPI> => {
+export const createFileApi = (fileObj: IFileAPICreate): AxiosPromise<IFileAPI> => {
     const fileObjApi: IFileAPI = {
         id: 0,
         fileName: fileObj.fileName,

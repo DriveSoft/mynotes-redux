@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react"
 import { useAppSelector, useAppDispatch } from "../../../app/hooks"
-import { fetchFiles, createFile } from '../../../shared/api'
+import { fetchFiles, createFileApi } from '../../../shared/api'
+import { fileAdded } from '../../../features/Filesbar'
+import { Spinner } from "../../../shared/ui/Spiner"
 import { Filesbar } from "../../../features/Filesbar"
-//import { AppContext, AppContextType } from "../../Context"
-import { IFileTree } from "../../../features/Filesbar"
+import { IFileTree } from "../../../shared/types"
 import { IFileType } from "../../../shared/types"
-//import { IFileAPI } from "../../../shared/api/types"
-//import { createFilenameAPI, updateFilenameAPI, deleteFilenameAPI } from "../../utils"
 import "./FilesContainer.css"
 
 const FilesContainer = () => {
 	const dispatch = useAppDispatch()
 
 	const [expanded, setExpanded] = useState<number[]>([])
-	const fileItems = useAppSelector( state => state.filesApi.fileItems )
+	//const fileItems = useAppSelector( state => state.filesApi.fileItems )
+	const fileItems = useAppSelector( state => state.filesbar.fileItems )
+	const isLoading = useAppSelector( state => state.filesApi.loading )
+	const errorFetching = useAppSelector( state => state.filesApi.error )
 	const activeFile = useAppSelector( state => state.files.activeFile )
 	
 	useEffect(() => {		
@@ -37,8 +39,10 @@ const FilesContainer = () => {
 		// 	throw new Error('API call for creating a file has been failed')		
 		// }	
 		
-		const response = await createFile({fileName: fileName, type: type, parentId: parentId})
-		return response.data.id
+		const response = await createFileApi({fileName: fileName, type: type, parentId: parentId})	
+		dispatch(fileAdded({id: response.data.id, fileName, type, parentId}))			
+		return 1
+		//return response.data.id
 	}
 
 	const onFileRename = async (fileObj: IFileTree, parentId: number): Promise<any> => {				
@@ -82,17 +86,26 @@ const FilesContainer = () => {
 	return (
 		<div className="filesContainer">
 			<span>EXPLORER</span>
-			<Filesbar
-				title="Dmitriy's notes"
-				treeData={fileItems}
-				selectedFile={activeFile}
-				expanded={expanded}
-				onFileCreate={onFileCreate}
-				onFileRename={onFileRename}
-				onFileDelete={onFileDelete}
-				onSelect={onSelect}
-				onExpanded={(expandedItems) => onExpanded(expandedItems)}
-			/>
+			{
+				isLoading ? 
+					<div style={{height: '50%'}}>
+						<Spinner /> 				
+					</div>
+				: errorFetching ?
+					<span style={{textAlign: 'center'}}>{errorFetching}</span>
+				:	
+					<Filesbar
+						title="Dmitriy's notes"
+						treeData={fileItems}
+						selectedFile={activeFile}
+						expanded={expanded}
+						onFileCreate={onFileCreate}
+						onFileRename={onFileRename}
+						onFileDelete={onFileDelete}
+						onSelect={onSelect}
+						onExpanded={(expandedItems) => onExpanded(expandedItems)}
+					/>				
+			}			
 		</div>
 	);
 };

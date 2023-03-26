@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import { createDataTree } from './utils'
+import { dataTreeApiToNestedDataTree } from './utils'
 import { IFileAPI } from '../../shared/api'
 import { IFileTree, IFileType } from "../../shared/types"
-import { getFilesList, createFile } from '../../shared/api'
+import { getFilesList } from '../../shared/api'
 import { IFileAPICreate } from './files'
 
 type InitialState = {
-    fileItems: IFileTree[] 
+    //fileItems: IFileTree[] 
     loading: boolean
     error: string 
 }
 
 const initialState: InitialState = {
-    fileItems: [],
+    //fileItems: [],
     loading: false,
     error: ''
 }
@@ -23,12 +23,10 @@ export const fetchFiles = createAsyncThunk('filesAPI/fetchFiles', () => {
         .then(response => response.data)
 });
 
-
-
-export const createFileAPI = createAsyncThunk('filesAPI/createFile', async (fileObj: IFileAPICreate, thunkAPI) => {
-    return createFile(fileObj)
-        .then(response => response.data)
-});
+//export const createFileAPI = createAsyncThunk('filesAPI/createFile', async (fileObj: IFileAPICreate, thunkAPI) => {
+//    return createFileApi(fileObj)
+//        .then(response => response.data)
+//});
 
 const filesSlice = createSlice({
     name: 'filesAPI',
@@ -36,22 +34,21 @@ const filesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(fetchFiles.pending, state => {
-            state.loading = true;
+            state.loading = true
         })
         builder.addCase(fetchFiles.fulfilled, (state, action: PayloadAction<IFileAPI[]>) => {
-            state.loading = false;
-            console.log(action.payload)
-            state.fileItems = createDataTree(action.payload)
-            state.error = '';
+            state.loading = false            
+            //state.fileItems = dataTreeApiToNestedDataTree(action.payload)
+            state.error = ''
         })
         builder.addCase(fetchFiles.rejected, (state, action) => {
-            state.loading = false;
-            state.fileItems = [];
-            state.error = action.error.message || 'Something went wrong';
+            state.loading = false
+            //state.fileItems = []
+            state.error = action.error.message || 'Something went wrong'
         })        
     }    
-});
+})
 
 
-export default filesSlice.reducer;
+export default filesSlice.reducer
 //export const { loaded } = filesSlice.actions;

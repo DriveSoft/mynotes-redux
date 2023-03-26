@@ -1,4 +1,4 @@
-@use "../../sass/variables";
+@use "../../../sass/variables";
 
 .mainEditor {
     background-color: variables.$textEditorBg; 
@@ -46,11 +46,6 @@ textarea {
 
 
  
-
-
-
-
-
 
 .wrapperLoading {
   display: flex;

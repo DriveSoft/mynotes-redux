@@ -1,3 +1,3 @@
 export { default as filesAPIReducer, fetchFiles } from './filesAPISlice'
-export * from './files'
+export { getFilesList, createFileApi } from './files'
 export type { IFileAPI } from './models'
