@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { ContextMenu } from "../../shared/ui/ContextMenu/ContexMenu"
+import { ContextMenuFilesbar } from "../../entities/ContextMenuFilesbar"
 import { ModalDeleteFile, IModalDlgBntResult } from "../../entities/ModalDeleteFile"
 import FileItem from "./FileItem"
 import { IFileTree, IFileItem } from "../../shared/types"
@@ -155,7 +155,7 @@ export function Filesbar({
 		})
 	}
 
-	const onClickItem = async(fileId: number, itemId: string) => {
+	const onClickItem = (fileId: number, itemId: string) => {
 		if (itemId === "NEW_FILE") {
 			setShowInputNewFileAtParent({parentId: 0, type: 'FILE'})
 		}
@@ -385,11 +385,11 @@ export function Filesbar({
 			</div>
 
 			{showMenu.show && (
-				<ContextMenu
-					onBlur={() => setShowMenu({show: false, x: 0, y: 0, fileId: 0})}
-					showMenu={showMenu}
+				<ContextMenuFilesbar
+					showAt={showMenu}	
+					fileId={showMenu.fileId}
 					onClickItem={onClickItem}
-					//setShowMenu={setShowMenu}
+					onBlur={() => setShowMenu({show: false, x: 0, y: 0, fileId: 0})}										
 				/>
 			)}
 

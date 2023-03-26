@@ -1,44 +1,50 @@
 import React, { useEffect, useRef } from "react";
 import "./ContextMenu.css";
 
-interface IMenuItems {
+export interface IMenuItems {
 	id: string
 	title: string
-	fileReq: boolean
+	enabled: boolean
+}
+
+export interface IPointXY {
+	x: number
+	y: number
 }
 
 interface ContexMenuProps {
-	//menuItems: IMenuItems[]
+	menuItems: IMenuItems[]
 	//showMenu: { show: boolean; x: number; y: number; fileId: number };
-	showMenu: { x: number; y: number; fileId: number };
-	onClickItem: (fileId: number, itemId: string) => void;	
+	showAt: IPointXY;
+	onClickItem: (itemId: string) => void;	
 	onBlur: () => void;
 	//setShowMenu: any;
 }
 
 export const ContextMenu = ({
-	showMenu,
+	menuItems,
+	showAt,
 	onClickItem,
 	onBlur,
 	//setShowMenu,
 }: ContexMenuProps) => {
-	const menuData = [
-		{
-			id: "NEW_FILE",
-			title: "New file",
-			fileReq: false,
-		},
-		{
-			id: "EDIT_FILE",
-			title: "Edit file",
-			fileReq: true,
-		},
-		{
-			id: "DELETE_FILE",
-			title: "Delete file",
-			fileReq: true,
-		},
-	];
+	// const menuData = [
+	// 	{
+	// 		id: "NEW_FILE",
+	// 		title: "New file",
+	// 		enabled: true,
+	// 	},
+	// 	{
+	// 		id: "EDIT_FILE",
+	// 		title: "Edit file",
+	// 		enabled: true,
+	// 	},
+	// 	{
+	// 		id: "DELETE_FILE",
+	// 		title: "Delete file",
+	// 		enabled: true,
+	// 	},
+	// ];
 
 	const ref = useRef<HTMLDivElement>(null)
 	useEffect(() => {		
@@ -48,13 +54,22 @@ export const ContextMenu = ({
 	return (
 		<div
 			className="containerMenu"
-			style={{ left: showMenu.x, top: showMenu.y }}
+			style={{ left: showAt.x, top: showAt.y }}
 			onBlur={onBlur}
 			tabIndex={0}
 			ref={ref}
 		>            
 			<ul>
-				{menuData.map((item) => (
+				{menuItems.map((item) => (
+					<li
+						key={item.id}
+                        className={!item.enabled ? "menuItem menuItemDisabled" : "menuItem" }  						
+						onClick={() => item.enabled && onClickItem(item.id)}
+					>
+						{item.title}                        
+					</li>
+				))}
+				{/* {menuData.map((item) => (
 					<li
 						key={item.id}
                         className={item.fileReq && showMenu.fileId === 0 ? "menuItem menuItemDisabled" : "menuItem" }  						
@@ -62,7 +77,7 @@ export const ContextMenu = ({
 					>
 						{item.title}                        
 					</li>
-				))}
+				))}				 */}
 			</ul>
 		</div>
 	);
